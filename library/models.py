@@ -12,16 +12,7 @@ class User(AbstractUser):
 class Book(models.Model):
     author = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
-    GENRE_CHOICES = [
-        (FICTION, 'Fiction'),
-        (NON-FICTION, 'Non-Fiction'),
-        (YOUNG-ADULT, 'Young Adult'),
-        (SCIFI, 'Science Fiction'),
-        (BIOGRAPHY, 'Biography'),
-        (MYSTERY, 'Mystery'),
-    ]
-    genre = models.CharField(max_length=100, choices=GENRE_CHOICES, default=FICTION,)
-
+    genre = models.CharField(max_length=250)
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['title'], name='no_repeats')
@@ -30,7 +21,7 @@ class Book(models.Model):
     def __str__(self):
         return {self.title}
 
-class Library(models.Models):
+class Library(models.Model):
     book_profile = models.CharField(max_length=250)
 
     def __str__(self):
