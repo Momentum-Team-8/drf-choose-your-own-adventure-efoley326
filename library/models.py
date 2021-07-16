@@ -30,7 +30,7 @@ class Book(models.Model):
     def __str__(self):
         return {self.title}
 
-class Library(model.Models)
+class Library(models.Models):
     book_profile = models.CharField(max_length=250)
 
     def __str__(self):
