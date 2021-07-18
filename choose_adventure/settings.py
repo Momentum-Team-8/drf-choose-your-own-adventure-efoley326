@@ -45,8 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'registration',
     'library',
+    
+    'registration',
+
 ]
 
 MIDDLEWARE = [
@@ -87,8 +89,6 @@ DATABASES = {
     'default': 
         env.db()
     }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -107,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL ='library.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
