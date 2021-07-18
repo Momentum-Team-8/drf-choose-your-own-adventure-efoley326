@@ -23,7 +23,7 @@ class Book(models.Model):
         return {self.title}
 class Library(models.Model):
     book_profile = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="books")
-
+    
     def __init__(self, author, title, genre, featured):
         self.author = author
         self.title = title

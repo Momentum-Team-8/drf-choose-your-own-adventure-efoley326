@@ -1,15 +1,12 @@
 from library.models import User, Book, Library
 from rest_framework import serializers
 
+class BookSerializer(serializers.ModelSerializer):
 
-
-
-class BookSerializer(serializers.Serializer):
-    author = serializers.CharField(max_length=200)
-    title = serializers.ForeignKey("Library", related_name="book")
-    genre = serializers.CharField(max_length=250)
-    featured = serializers.BooleanField(default=False)
-
+    class Meta:
+        model = Book
+        fields = ['author', 'title', 'genre', 'featured']
+    
     def create(self, validated_data):
         return Book.objects.create(validated_data)
 
@@ -21,9 +18,18 @@ class BookSerializer(serializers.Serializer):
         instance.save()
         return instance
 
-class LibrarySerializer(serializers.Serializer):
-    book_profile = serializers.ForeignKey(Book, related_name="books")
+class LibrarySerializer(serializers.ModelSerializer):
+    model = Library
+    fields = [
+    'book_profile']
+
+    @classmethod
+    def many_init(Library, *args, **kwargs):
+        kwargs['Book'] = Library()
+        return Library(*args, **kwargs)
 
     def create(self, validated_data):
         return Library.objects.create(validated_data)
 
+
+class BookEdit(serializers.Serializer)
