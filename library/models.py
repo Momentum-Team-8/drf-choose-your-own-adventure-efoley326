@@ -11,6 +11,7 @@ class User(AbstractUser):
 
 class Book(models.Model):
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     author = models.CharField(max_length=200)
     title = models.ForeignKey("Library", on_delete=models.CASCADE, related_name="book")
     genre = models.CharField(max_length=250)
@@ -23,7 +24,7 @@ class Book(models.Model):
     def __str__(self):
         return {self.title}
 class Library(models.Model):
-    book_profile = models.ForeignKey("Book", on_delete=models.CASCADE, related_name="bookinfo")
+    book_profile = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="books")
 
     def __init__(self, author, title, genre, featured):
         self.author = author
