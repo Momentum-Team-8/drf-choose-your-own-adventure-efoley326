@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import constraints, ManyToOneRel
 from django.contrib.auth.models import AbstractUser
+# from choose_adventure.settings import AUTH_USER_MODEL
 
 class User(AbstractUser):
     def __str__(self):
