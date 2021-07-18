@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import constraints, ManyToOneRel
 from django.contrib.auth.models import AbstractUser
-# from choose_adventure.settings import AUTH_USER_MODEL
+
 
 class User(AbstractUser):
     def __str__(self):
@@ -9,7 +9,7 @@ class User(AbstractUser):
 
 class Book(models.Model):
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     author = models.CharField(max_length=200)
     title = models.ForeignKey("Library", on_delete=models.CASCADE, related_name="book")
     genre = models.CharField(max_length=250)
