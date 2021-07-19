@@ -1,11 +1,11 @@
 from django.db import models
-from django.db.models import constraints, ManyToOneRel
+from django.db.models import constraints
 from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
     def __str__(self):
-        return self.username
+        return self.name
 
 class Book(models.Model):
 
@@ -23,7 +23,7 @@ class Book(models.Model):
         return {self.title}
 class Library(models.Model):
     book_profile = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="books")
-    
+
     def __init__(self, author, title, genre, featured):
         self.author = author
         self.title = title

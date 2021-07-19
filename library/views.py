@@ -1,42 +1,48 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
 from library.models import Book, Library
-from library.serializers import BookSerializer, LibrarySerializer
+from library.serializers import BookSerializer, LibrarySerializer, UserSerializer
+from django.contrib.auth.models import User
+from rest_framework import generics, Response, status
+from rest_framework.permissions import IsAdminUser
+from rest_framework.views import APIView
 
-class JSONResponse(HttpResponse):
-    def __init__(self, data, kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['book_info'] = 'library/json'
-        super(JSONResponse, self).__init__(content, kwargs)
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
 
-def library(request):
-    if request.method == 'GET':
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class TheLibrary(APIView):
+
+    def get(self, request, format=None):
         books = Book.objects.all()
         serializer = LibrarySerializer(books, many=True)
-        return JSONResponse(serializer.data)
-    elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = LibrarySerializer(data=data)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = LibrarySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-def book_info(request,pk):
-    book = Book.objects.get(pk=pk)
+class BookProfile(APIView):
 
-    if request.method == 'GET':
-        serializer = BookSerializer(book)
-        return JSONResponse(serializer.data)
-    elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = BookSerializer(book, data=data)
+    def get_book(self, pk):
+        return Book.objects.get(pk=pk)
+
+    def put(self, request, pk, format=None):
+        book = self.get_object(pk)
+        serializer = BookSerializer(book, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data)
-        return JSONResponse(serializer.errors, status=400)
-
+            return Response(serializer.data)
+    def delete(self, request, pk, format=None):
+        book = self.get_object(pk)
+        book.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
