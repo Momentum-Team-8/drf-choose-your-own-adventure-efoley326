@@ -4,9 +4,9 @@ from django.urls import path, include
 from library import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('registration.backends.default.urls')),
+    path(r'^admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+    path('library/', include('library.urls')),
     path('library/', views.TheLibrary.as_view()),
     path('library/<int:pk>/', views.BookProfile.as_view()),
 ]
