@@ -1,9 +1,9 @@
-from library.models import Book, Library
+from library.models import Book, Library, User
 from library.serializers import BookSerializer, LibrarySerializer, UserSerializer
-from django.contrib.auth.models import User
-from rest_framework import generics, Response, status
+from rest_framework import generics, status
 from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()

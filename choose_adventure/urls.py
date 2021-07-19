@@ -4,11 +4,11 @@ from django.urls import path, include
 from library import views
 
 urlpatterns = [
-    path(r'^admin/', admin.site.urls),
+    
     path('api-auth/', include('rest_framework.urls')),
-    path('library/', include('library.urls')),
     path('library/', views.TheLibrary.as_view()),
     path('library/<int:pk>/', views.BookProfile.as_view()),
+    path(r'^admin/', admin.site.urls),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
